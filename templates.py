@@ -13,6 +13,13 @@ AERENDER_PATH = "/Applications/Adobe\ After\ Effects\ 2023/aerender"
 OUTPUT_MODULE = "DragonsTV Graphics" if IS_WINDOWS else "DTV Output"
 
 
+ASSET_VALUE_NAME = {
+    "image": "src",
+    "text": "value",
+    "expression": "expression"
+}
+
+
 class KeepRefs(object):
     __refs__ = defaultdict(list)
 
@@ -42,10 +49,11 @@ class Template(ABC, KeepRefs):
 
 @dataclass
 class AEAsset:
-    kind: Literal["text", "image"]
+    kind: Literal["text", "image", "expression"]
     layer: str
     value: str
     getter_func: Optional[Callable] = None
+    prop: Optional[str] = None
 
     def resolve_asset(self) -> str:
         if self.getter_func:
@@ -53,16 +61,17 @@ class AEAsset:
         return self.value
 
     def get_asset_json(self) -> dict:
-        value_name = "src" if self.kind == "image" else "value"
+        value_name = ASSET_VALUE_NAME.get(self.kind)
         json = {
-            "type": self.kind,
+            "type": "image" if self.kind == "image" else "data",
             value_name: self.resolve_asset(),
             "layerName": self.layer
         }
 
         if self.kind == "text":
-            json["type"] = "data"
             json["property"] = "Source Text"
+        elif self.kind == "expression":
+            json["property"] = self.prop
     
         return json
         

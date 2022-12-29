@@ -1,0 +1,50 @@
+Screen {
+    layout: horizontal;
+    align: center middle;
+}
+
+ListView {
+    width: 20%;
+    height: 100%;
+    margin: 2 2;
+}
+
+Label {
+    padding: 1 2;
+}
+
+#main {
+    width: 75%;
+    height: 100%;
+    padding: 2 2;
+}
+
+.input {
+    width: 100%;
+    layout: horizontal;
+}
+
+#sidebar {
+    dock: left;
+}
+
+.label {
+    width: 30%;
+    content-align: center middle;
+    padding: 1 2;
+}
+
+.text-input {
+    max-width: 65%;
+}
+
+#dialog {
+    grid-size: 1;
+    grid-gutter: 1 2;
+    margin: 1 2;
+    height: 100%;
+}
+
+#dialog > Button {
+    width: 100%;
+}
